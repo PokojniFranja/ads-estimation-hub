@@ -5,7 +5,8 @@
       "Bash(npx ts-node:*)",
       "Bash(iconv:*)",
       "Bash(__NEW_LINE_71c6bde88bd65a1d__ echo \"Q1_2025.csv kreiran:\")",
-      "Bash(__NEW_LINE_a88f94b7d7248050__ echo \"Q3_2025.csv kreiran:\")"
+      "Bash(__NEW_LINE_a88f94b7d7248050__ echo \"Q3_2025.csv kreiran:\")",
+      "Bash(python:*)"
     ]
   }
 }
