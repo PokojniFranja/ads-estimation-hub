@@ -1,0 +1,1209 @@
+{
+  "audit": {
+    "timestamp": "2026-02-06T15:41:32.085Z",
+    "rawTotalSpend": 1811700.9399999983,
+    "nonHrSpend": 219699.38,
+    "worldwideMcSpend": 7623.639999999999,
+    "finalHrSpend": 1645301.9099999983,
+    "totalCampaigns": 1522,
+    "hrCampaigns": 1428,
+    "excludedCampaigns": 138
+  },
+  "nonHrCampaigns": [
+    {
+      "id": "22737245028",
+      "name": "VID_OMD_RS-SR_OHC_PTB_PTBPremium_Sonicare8000S_RECMTPTB_GOO_BRD_Sonicare Prismatic_Awareness_25.6.-20.7.2025",
+      "spend": 6750.19,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22257842791",
+      "name": "Elgrad GDN Always On 2025 (DN) - CPC",
+      "spend": 6532.83,
+      "countries": [
+        "Austria"
+      ]
+    },
+    {
+      "id": "22854651094",
+      "name": "PMAX_OMD_SI-SL_ALL_CrossBU_CrossProduct_CrossProduct_NA_GOO_BRD_Webshop_AO",
+      "spend": 5666.709999999998,
+      "countries": [
+        "Greece",
+        "Luxembourg",
+        "Albania",
+        "Slovenia",
+        "Qatar",
+        "France",
+        "New Zealand",
+        "Romania",
+        "Latvia",
+        "Slovakia",
+        "Brunei",
+        "Martinique",
+        "South Korea",
+        "Czechia",
+        "Macao",
+        "Spain",
+        "Oman",
+        "Kosovo",
+        "Thailand",
+        "Singapore",
+        "South Africa",
+        "Bosnia and Herzegovina",
+        "Chile",
+        "Finland",
+        "Ukraine",
+        "Belgium",
+        "Sweden",
+        "Switzerland",
+        "Cyprus",
+        "Iceland",
+        "Malta",
+        "Hong Kong",
+        "Lithuania",
+        "Israel",
+        "Bulgaria",
+        "Portugal",
+        "Reunion",
+        "Denmark",
+        "Mexico",
+        "United Arab Emirates",
+        "Germany",
+        "Estonia",
+        "Nigeria",
+        "Poland",
+        "Montenegro",
+        "Japan",
+        "Norway",
+        "North Macedonia",
+        "United States",
+        "Egypt",
+        "Netherlands",
+        "Saudi Arabia"
+      ]
+    },
+    {
+      "id": "22632811349",
+      "name": "Saponia Ornel Nagradna Igra BiH Jun - Jul 2025 (DN) - CPC",
+      "spend": 5178.68,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "22400193514",
+      "name": "Saponia Likvi BiH Apr - May 2025 (YT) - CPM",
+      "spend": 4248.83,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "22247576781",
+      "name": "VID_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_17.02.-14.04.",
+      "spend": 3900.65,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22248075321",
+      "name": "VID_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_17.02.-14.04.",
+      "spend": 3497.52,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22689604765",
+      "name": "DG_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade 16.6.-20.8.2025.",
+      "spend": 3000.02,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22973430471",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_3.9.-5.10.",
+      "spend": 2999.96,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22444782155",
+      "name": "VID_OMD_RS-SR_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom_15.04.-04.06..",
+      "spend": 2800.55,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22273119028",
+      "name": "Elgrad  Feb - Mar 2025 (YT) - CPM",
+      "spend": 2599.24,
+      "countries": [
+        "Austria"
+      ]
+    },
+    {
+      "id": "22450383483",
+      "name": "VID_OMD_RS-SR_MCC_MCCUnd_MCCUnd_MCCUnd_NA_GOO_BRD_Vera_18.4.-15.6.2025.",
+      "spend": 2502.02,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22394892459",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_1.4.-30.5.",
+      "spend": 2501.79,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22524433186",
+      "name": "VID_OMD_RS-SR_OHC_ID_InterdentalUndiv_InterdentalUndiv_NA_GOO_BRD_PowerFlosser_05.05.-04.07.",
+      "spend": 2499.69,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22691380071",
+      "name": "VID_OMD_HR-HR_ALL_CrossBU_CrossProduct_CrossProduct_NA_GOO_BRD_Webshop_Campaign_SLO",
+      "spend": 2499.55,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22452071881",
+      "name": "VID_OMD_SI-SL_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_Curler_15.4.-15.6.2025.",
+      "spend": 2489.87,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23237577731",
+      "name": "VID_OMD_RS-SR_MCC_MCCUnd_MCCUnd_MCCUnd_NA_GOO_BRD_Avent_YT_7.11.-30.11.2025.",
+      "spend": 2486.08,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23136133814",
+      "name": "VID_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.10.-24.12.2025",
+      "spend": 2448.52,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22548314541",
+      "name": "VID_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.5.-30.6.2025.",
+      "spend": 2400.59,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22558299544",
+      "name": "VID_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.5.-30.6.2025.",
+      "spend": 2301.47,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22660872715",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_Intimate_W_9.6.-30.7.",
+      "spend": 2300.57,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22429388089",
+      "name": "VID_OMD_BA-BS_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_8.4.-30.6.2025",
+      "spend": 2151.43,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "23130385353",
+      "name": "VID_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.10.-24.12.2025",
+      "spend": 2102.37,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22439010633",
+      "name": "VID_OMD_RS-SR_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_Curler_15.04.-15.06.2025",
+      "spend": 2100.56,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23155285862",
+      "name": "VID_OMD_RS-SR_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom_20.09.-10.11.2025.",
+      "spend": 2100.05,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23034172058",
+      "name": "VID_OMD_RS-SR_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_SenseIQ_10.09.-30.10.2025",
+      "spend": 2099.72,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23172866092",
+      "name": "VID_OMD_RS-SR_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_YT_20.10.-31.12.2025.",
+      "spend": 2098.29,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23034204641",
+      "name": "VID_OMD_SI-SL_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_SenseIQ_10.09.-30.10.2025",
+      "spend": 2080.95,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22448545813",
+      "name": "DG_OMD_SI-SL_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom 15.4.-4.6.",
+      "spend": 2050.26,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23283992828",
+      "name": "VID_OMD_SI-SL_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_YT_14.11.-31.12.2025.",
+      "spend": 2015.35,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23237376398",
+      "name": "VID_OMD_RS-SR_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Flame_YT_1.11.-31.12.2025.",
+      "spend": 2001.97,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23283969599",
+      "name": "VID_OMD_RS-SR_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_YT_14.11.-31.12.2025.",
+      "spend": 2001.73,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22514311083",
+      "name": "DG_OMD_SI-SL_OHC_ID_InterdentalUndiv_InterdentalUndiv_NA_GOO_BRD_PowerFlosser_05.05.-04.07.",
+      "spend": 2000.89,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23241634504",
+      "name": "DG_OMD_SI-SL_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Flame_DG_1.11.-31.12.2025.",
+      "spend": 2000.2,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22305875906",
+      "name": "DG_OMD_RS-SR_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Flame_4.3.-15.4.2025.",
+      "spend": 1999.85,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22514313036",
+      "name": "VID_OMD_SI-SL_OHC_ID_InterdentalUndiv_InterdentalUndiv_NA_GOO_BRD_PowerFlosser_05.05.-04.07.",
+      "spend": 1999.47,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22747183861",
+      "name": "VID_OMD_SI-SL_OHC_PTB_PTBPremium_Sonicare8000S_RECMTPTB_GOO_BRD_Sonicare Prismatic_Awareness_25.6.-20.7.2025",
+      "spend": 1973.37,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22149189739",
+      "name": "DG_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_20.1.-7.4.",
+      "spend": 1949.91,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22247614314",
+      "name": "DG_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_17.02.-14.04.",
+      "spend": 1949.89,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22425721094",
+      "name": "VID_OMD_SI-SL_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_8.4.-30.6.2025.",
+      "spend": 1921.68,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23168273492",
+      "name": "VID_OMD_SI-SL_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_YT_20.10.-31.12.2025.",
+      "spend": 1901.91,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22258179016",
+      "name": "PMAX_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_17.02.-14.04.",
+      "spend": 1846.88,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23159899915",
+      "name": "DG_OMD_SI-SL_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom 20.09.-10.11.2025.",
+      "spend": 1822.32,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23038253197",
+      "name": "DG_OMD_SI-SL_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_SenseIQ_10.09.-30.10.2025",
+      "spend": 1799.05,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22346314041",
+      "name": "VID_OMD_ME-ME_GB_OG_OneBladeOther_OneBladeComm.Inn._NA_GOO_BRD_One Blade_20.3.-30.4.2025.",
+      "spend": 1786.73,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "22448324377",
+      "name": "DG_OMD_RS-SR_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom_15.04.-04.06..",
+      "spend": 1750.12,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22419266775",
+      "name": "DG_OMD_RS-SR_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_8.4.-30.6.2025.",
+      "spend": 1749.97,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22258612036",
+      "name": "DG_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_17.02.-14.04.",
+      "spend": 1700.7,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22309625236",
+      "name": "DG_OMD_SI-SL_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Flame_4.3.-15.4.2025.",
+      "spend": 1700.45,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22442272935",
+      "name": "DG_OMD_SI-SL_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_Curler_15.4.-15.6.2025.",
+      "spend": 1650.47,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22149298273",
+      "name": "DG_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_20.1.-7.4.",
+      "spend": 1649.87,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23163601191",
+      "name": "VID_OMD_BA-BS_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_YT_20.10.-31.12.2025.",
+      "spend": 1552.06,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "22548317505",
+      "name": "DG_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.5.-30.6.2025.",
+      "spend": 1550.78,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23034203750",
+      "name": "PMAX_OMD_SI-SL_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_SenseIQ_10.09.-30.10.2025",
+      "spend": 1519.96,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22425754280",
+      "name": "VID_OMD_RS-SR_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_8.4.-30.6.2025.",
+      "spend": 1501.4,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23200213176",
+      "name": "VID_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st Shave_YT_Parents_1.11.-12.12.2025.",
+      "spend": 1500.91,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22439032317",
+      "name": "DG_OMD_RS-SR_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_Curler_15.04.-15.06.2025",
+      "spend": 1499.99,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23142979085",
+      "name": "PMAX_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_15.10-15.12.2025.",
+      "spend": 1458.51,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23147384833",
+      "name": "DG_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_15.10-15.12.2025.",
+      "spend": 1457.03,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23028088734",
+      "name": "DG_OMD_RS-SR_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_SenseIQ_10.09.-30.10.2025",
+      "spend": 1445.41,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23209598329",
+      "name": "VID_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st Shave_YT_Teens_1.11.-12.12.2025.",
+      "spend": 1431.31,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23150051901",
+      "name": "DG_OMD_RS-SR_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom_20.09.-10.11.2025.",
+      "spend": 1406.51,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22448389351",
+      "name": "PMAX_OMD_RS-SR_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom_15.04.-04.06..",
+      "spend": 1404.31,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23223956797",
+      "name": "VID_OMD_BA-BS_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_YT_1.11.-15.12.2025.",
+      "spend": 1401.07,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "23237577080",
+      "name": "VID_OMD_SI-SL_MCC_MCC_MCCUnd_MCCUndivided_NA_GOO_BRD_Avent_YT_7.11.-30.11.2025.",
+      "spend": 1400.61,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22456853468",
+      "name": "VID_OMD_SI-SL_MCC_MCCUnd_MCCUnd_MCCUnd_NA_GOO_BRD_Vera_18.4.-15.6.2025.",
+      "spend": 1400.35,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23130333303",
+      "name": "DG_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.10.-24.12.2025",
+      "spend": 1392.06,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23162921025",
+      "name": "VID_OMD_ME-ME_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_YT_20.10.-31.12.2025.",
+      "spend": 1352.57,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "22554733670",
+      "name": "DG_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.5.-30.6.2025.",
+      "spend": 1350.01,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22651133247",
+      "name": "DG_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_Intimate_W_9.6.-30.7.",
+      "spend": 1348.1,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22149298726",
+      "name": "PMAX_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_20.1.-7.4.",
+      "spend": 1345.93,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23140250137",
+      "name": "DG_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.10.-24.12.2025",
+      "spend": 1305.73,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22679984082",
+      "name": "VID_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade 16.6.-20.8.2025.",
+      "spend": 1301.47,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22419376731",
+      "name": "DG_OMD_ME-ME_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_20.4.-30.6.",
+      "spend": 1300.01,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "23136950325",
+      "name": "PMAX_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_15.10-15.12.2025.",
+      "spend": 1250.82,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23142265184",
+      "name": "DG_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_15.10-15.12.2025.",
+      "spend": 1249.92,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22599460230",
+      "name": "DG_OMD_SI-SL_ALL_CrossBU_CrossProduct_CrossProduct_NA_GOO_BRD_CRM_Newsletter",
+      "spend": 1249.4,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22419312144",
+      "name": "PMAX_OMD_RS-SR_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_8.4.-30.6.2025.",
+      "spend": 1248.47,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23214557439",
+      "name": "DIS_OMD_BA-BS_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_GDN_Awareness_1.11.-15.12.2025.",
+      "spend": 1236.01,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "23074322560",
+      "name": "DIS_OMD_ME-ME_GB_OG_OneBladeOther_OneBladeComm.Inn._NA_GOO_BRD_One Blade_1.10.-30.11.2025.",
+      "spend": 1223.44,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "22499210098",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st Shave_Parents_1.5.-15.6.",
+      "spend": 1200.73,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23171314950",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_Intimate_W_10.10.-30.11.",
+      "spend": 1200.54,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22986865838",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st shave_parents_05.09.-15.10.",
+      "spend": 1200.22,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22514381406",
+      "name": "DG_OMD_RS-SR_OHC_ID_InterdentalUndiv_InterdentalUndiv_NA_GOO_BRD_PowerFlosser_05.05.-04.07.",
+      "spend": 1199.95,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22429390030",
+      "name": "DIS_OMD_ME-ME_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_20.4.-30.6.",
+      "spend": 1199.83,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "22254797006",
+      "name": "DIS_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_17.02.-14.04.",
+      "spend": 1199.56,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23028088689",
+      "name": "PMAX_OMD_RS-SR_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_SenseIQ_10.09.-30.10.2025",
+      "spend": 1195.58,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23130385398",
+      "name": "PMAX_OMD_RS-SR_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.10.-24.12.2025",
+      "spend": 1194.86,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23140199437",
+      "name": "PMAX_OMD_SI-SL_OHC_PTB_PTBPremium_Prestige9900S_RECMTPTB_GOO_BRD_Sonicare_15.10.-24.12.2025",
+      "spend": 1192.71,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23099450520",
+      "name": "PMAX_OMD_SI-SL_ALL_CrossBU_CrossProduct_CrossProduct_NA_GOO_BRD_Webshop_AO_Lumea",
+      "spend": 1175.79,
+      "countries": [
+        "Sweden",
+        "Thailand",
+        "Netherlands",
+        "Slovenia",
+        "Poland",
+        "Maldives",
+        "Vietnam",
+        "Portugal",
+        "Norway",
+        "Latvia",
+        "Nigeria",
+        "Germany",
+        "Switzerland",
+        "United Arab Emirates",
+        "Indonesia",
+        "Malta",
+        "France",
+        "Czechia",
+        "Bosnia and Herzegovina",
+        "Spain",
+        "Montenegro",
+        "North Macedonia",
+        "Cyprus",
+        "Luxembourg",
+        "Kosovo",
+        "Romania"
+      ]
+    },
+    {
+      "id": "22356422344",
+      "name": "DG_OMD_ME-ME_GB_OG_OneBladeOther_OneBladeComm.Inn._NA_GOO_BRD_One Blade_20.3.-30.4.2025.",
+      "spend": 1150,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "23070221480",
+      "name": "DG_OMD_ME-ME_GB_OG_OneBladeOther_OneBladeComm.Inn._NA_GOO_BRD_One Blade_1.10.-30.11.2025.",
+      "spend": 1099.99,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "23168792552",
+      "name": "DIS_OMD_BA-BS_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_GDN_Awareness_20.10.-31.12.2025.",
+      "spend": 1099.31,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "22425862319",
+      "name": "DG_OMD_BA-BS_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_8.4.-30.6.2025",
+      "spend": 1068.04,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "22145408123",
+      "name": "PMAX_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_One Blade_20.1.-7.4.",
+      "spend": 1050.11,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23283992777",
+      "name": "DIS_OMD_SI-SL_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_GDN_14.11.-31.12.2025.",
+      "spend": 1047.75,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22445568686",
+      "name": "PMAX_OMD_RS-SR_GB_BEA_HairCare_Straight&CurlerCore_NA_GOO_BRD_Curler_15.04.-15.06.2025",
+      "spend": 1047.64,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23232282903",
+      "name": "VID_OMD_SI-SL_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Flame_YT_1.11.-31.12.2025.",
+      "spend": 1001.66,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22309555849",
+      "name": "VID_OMD_RS-SR_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Flame_4.3.-15.4.2025.",
+      "spend": 1000.83,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22489149258",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st Shave_Teens_1.5.-15.6.",
+      "spend": 1000.63,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22986865835",
+      "name": "VID_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st shave_teens_05.09.-15.10.",
+      "spend": 1000.03,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22419187677",
+      "name": "DG_OMD_SI-SL_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_8.4.-30.6.2025.",
+      "spend": 1000,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22352726045",
+      "name": "DIS_OMD_ME-ME_GB_OG_OneBladeOther_OneBladeComm.Inn._NA_GOO_BRD_One Blade_20.3.-30.4.2025.",
+      "spend": 999.98,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "22686031805",
+      "name": "DG_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_16.6.-20.8.2025.",
+      "spend": 999.97,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "22305823658",
+      "name": "VID_OMD_SI-SL_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Youtube_4.3.-15.4.2025.",
+      "spend": 999.82,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22680238722",
+      "name": "PMAX_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_16.6.-20.8.2025.",
+      "spend": 998.36,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23200040769",
+      "name": "DIS_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st Shave_GDN_1.11.-12.12.2025.",
+      "spend": 997.5,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22524434296",
+      "name": "PMAX_OMD_RS-SR_OHC_ID_InterdentalUndiv_InterdentalUndiv_NA_GOO_BRD_PowerFlosser_05.05.-04.07.",
+      "spend": 987.65,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23232232446",
+      "name": "DG_OMD_RS-SR_GB_BEA_HairCare_DryerCore_NA_GOO_BRD_Flame_DG_1.11.-31.12.2025.",
+      "spend": 979.43,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23159736373",
+      "name": "PMAX_OMD_RS-SR_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom_20.09.-10.11.2025.",
+      "spend": 954.6,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23163170868",
+      "name": "DIS_OMD_RS-SR_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_GDN_20.10.-31.12.2025.",
+      "spend": 946.08,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23288257666",
+      "name": "PMAX_OMD_SI-SL_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_PMAX_14.11.-31.12.2025.",
+      "spend": 944.34,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22657308689",
+      "name": "PMAX_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_Intimate_W_9.6.-30.7.",
+      "spend": 898.31,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23163620307",
+      "name": "DIS_OMD_BA-BS_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_GDN_Consideration_20.10.-31.12.2025.",
+      "spend": 841.44,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "23155482644",
+      "name": "PMAX_OMD_SI-SL_GB_OG_GroomingUndiv_GroomingUndivided_NA_GOO_BRD_Multigroom 20.09.-10.11.2025.",
+      "spend": 821.79,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23288353174",
+      "name": "DIS_OMD_RS-SR_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_GDN_14.11.-31.12.2025.",
+      "spend": 796.31,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23070220712",
+      "name": "VID_OMD_ME-ME_GB_OG_OneBladeOther_OneBladeComm.Inn._NA_GOO_BRD_One Blade_1.10.-30.11.2025.",
+      "spend": 790.59,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "23210024144",
+      "name": "PMAX_OMD_RS-SR_ALL_CrossBU_CrossProduct_CrossProduct_NA_GOO_BRD_Webshop_AO_Lumea",
+      "spend": 789.86,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23168284316",
+      "name": "DIS_OMD_ME-ME_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_GDN_20.10.-31.12.2025.",
+      "spend": 763.75,
+      "countries": [
+        "Montenegro"
+      ]
+    },
+    {
+      "id": "23168583044",
+      "name": "DIS_OMD_SI-SL_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_GDN_20.10.-31.12.2025.",
+      "spend": 747.23,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23223237310",
+      "name": "DIS_OMD_BA-BS_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_GDN_Consideration_1.11.-15.12.2025.",
+      "spend": 716.23,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "23168364167",
+      "name": "DG_OMD_RS-SR_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_DG_20.10.-31.12.2025.",
+      "spend": 715.51,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23140032196",
+      "name": "DG_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_Intimate_W_10.10.-30.11.",
+      "spend": 710.76,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23279014023",
+      "name": "DG_OMD_SI-SL_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_DG_14.11.-31.12.2025.",
+      "spend": 704.1,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23140032403",
+      "name": "PMAX_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_Intimate_W_10.10.-30.11.",
+      "spend": 698.91,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23279087904",
+      "name": "PMAX_OMD_RS-SR_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_PMAX_14.11.-31.12.2025.",
+      "spend": 697.49,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23172774658",
+      "name": "PMAX_OMD_RS-SR_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_PMAX_20.10.-31.12.2025.",
+      "spend": 695.42,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23168792639",
+      "name": "DG_OMD_BA-BS_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_DG_20.10.-31.12.2025.",
+      "spend": 650.94,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "23163083511",
+      "name": "DG_OMD_SI-SL_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_DG_20.10.-31.12.2025.",
+      "spend": 602.14,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "22986885344",
+      "name": "PMAX_OMD_RS-SR_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st shave_05.09.-15.10.",
+      "spend": 600.16,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23209534063",
+      "name": "PMAX_OMD_SI-SL_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_1st Shave_PMAX_Parents_1.11.-12.12.2025.",
+      "spend": 600.08,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23279038791",
+      "name": "DG_OMD_RS-SR_GB_S_ShavingUnd_ShavingUndivided_NA_GOO_BRD_Shaving_DG_14.11.-31.12.2025.",
+      "spend": 555.72,
+      "countries": [
+        "Serbia"
+      ]
+    },
+    {
+      "id": "23163083466",
+      "name": "PMAX_OMD_SI-SL_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_PMAx_20.10.-31.12.2025.",
+      "spend": 513.54,
+      "countries": [
+        "Slovenia"
+      ]
+    },
+    {
+      "id": "23214457857",
+      "name": "DG_OMD_BA-BS_GB_OG_OneBladeOther_OneBladeComm.Inn._RECMANOB_GOO_BRD_OneBlade_DG_Consideration_1.11.-15.12.2025.",
+      "spend": 409.48,
+      "countries": [
+        "Bosnia and Herzegovina"
+      ]
+    },
+    {
+      "id": "23163237003",
+      "name": "DG_OMD_ME-ME_GB_BEA_IPLHairRemoval_IPLAcc.&Undivided_NA_GOO_BRD_Lumea_DG_20.10.-31.12.2025.",
+      "spend": 400.24,
+      "countries": [
+        "Montenegro"
+      ]
+    }
+  ],
+  "worldwideMcCampaigns": [
+    {
+      "id": "22739124367",
+      "name": "McDonald's Stripsi June - July 2025 (YT) - CPV",
+      "spend": 2515.85
+    },
+    {
+      "id": "22739104237",
+      "name": "McDonald's Stripsi June - July 2025 (YT) - Bumper",
+      "spend": 1520.39
+    },
+    {
+      "id": "22738910359",
+      "name": "McDonald's IceCoffe June - August 2025 (YT) - CPV",
+      "spend": 3587.4
+    }
+  ],
+  "waterfall": [
+    {
+      "step": "Raw Total",
+      "spend": 1811700.9399999983,
+      "campaigns": 1522
+    },
+    {
+      "step": "Excluded: Non-HR",
+      "spend": -219699.38,
+      "campaigns": -135
+    },
+    {
+      "step": "Excluded: Worldwide McD",
+      "spend": -7623.639999999999,
+      "campaigns": -3
+    },
+    {
+      "step": "Final HR",
+      "spend": 1645301.9099999983,
+      "campaigns": 1428
+    }
+  ]
+}

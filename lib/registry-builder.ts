@@ -126,23 +126,135 @@ function generateStandardizedName(originalName: string, adFormat: string): strin
   // Placeholder - za sada vraćam Original Name
   // TODO: Implementirati puno parsiranje prema taksonomiji
 
-  // Ekstrakcija osnovnih informacija iz naziva
-  const parts = originalName.split('_');
+  // Case-insensitive matching - konvertiraj u lowercase za provjeru
+  const lowerName = originalName.toLowerCase();
 
-  // Pokušaj ekstrakcije brand-a
+  // Pokušaj ekstrakcije brand-a (case-insensitive)
   let brand = 'Unknown';
-  if (originalName.includes('McDonald')) brand = 'McDonald\'s';
-  else if (originalName.includes('Nivea') || originalName.includes('NFC') || originalName.includes('NBD')) brand = 'Nivea';
-  else if (originalName.includes('Rio Mare')) brand = 'Rio Mare';
-  else if (originalName.includes('Oetker')) brand = 'Dr. Oetker';
-  else if (originalName.includes('Bref')) brand = 'Bref';
-  else if (originalName.includes('Schauma')) brand = 'Schauma';
-  else if (originalName.includes('Belupo') || originalName.includes('Rinil')) brand = 'Belupo';
-  else if (originalName.includes('Ahmad')) brand = 'Ahmad Tea';
-  else if (originalName.includes('Bison')) brand = 'Bison';
-  else if (originalName.includes('Loacker')) brand = 'Loacker';
-  else if (originalName.includes('Porsche')) brand = 'Porsche';
-  else if (originalName.includes('Saponia')) brand = 'Saponia';
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // ELECTRONICS & APPLIANCES
+  // ═══════════════════════════════════════════════════════════════════════
+
+  // LG
+  if (lowerName.startsWith('hr_') && (lowerName.includes('_oth_') || lowerName.includes('_he_') || lowerName.includes('_ha_'))) brand = 'LG';
+  else if (lowerName.includes('lg.com') || lowerName.includes('elipso.hr')) brand = 'LG';
+
+  // Bosch
+  // NAPOMENA: 'detox' je specifično za ovaj dataset (Bosch Detox kampanja)
+  else if (lowerName.includes('bosch') || lowerName.includes('mum6') || lowerName.includes('mum5') ||
+           lowerName.includes('_mda_') || lowerName.includes('_sda_') ||
+           (lowerName.includes('detox') && lowerName.includes('homeappliances'))) brand = 'Bosch';
+
+  // Philips
+  // VAŽNO: NE koristiti 'demand gen' kao marker - to je TYPE!
+  // Markeri: Philips ime, OMD kodovi, Versuni, PH sufiks, specifični proizvodi
+  else if (lowerName.includes('philips') ||
+           // OMD Agency kodovi
+           lowerName.includes('omd_hr-hr_gb_') || lowerName.includes('omd_ba-bs_gb_') ||
+           lowerName.includes('omd_hr-hr_all_') || lowerName.includes('omd_hr-hr_ohc_') ||
+           // Personal Care proizvodi
+           lowerName.includes('oneblade') || lowerName.includes('sonicare') || lowerName.includes('lumea') ||
+           lowerName.includes('avent') || lowerName.includes('_mcc_') || lowerName.includes('_ohc_') ||
+           // Domestic Appliances - Versuni
+           lowerName.includes('versuni') ||
+           // Philips Domestic Appliances - specifični proizvodi
+           lowerName.includes('airfryer') || lowerName.includes('unlimited') ||
+           lowerName.includes('indoorcleaning') || lowerName.includes('vacuumcleaners') ||
+           lowerName.includes('laundrycare') || lowerName.includes('washingmachines') ||
+           lowerName.includes('cookingrange') ||
+           // Philips PH sufiks ili KeyVisuals/Webshop kampanje
+           lowerName.endsWith(' - ph') || lowerName.includes('keyvisuals - ph') ||
+           (lowerName.includes('croatia') && (lowerName.includes('keyvisuals') || lowerName.includes('webshop')))) brand = 'Philips';
+
+  // Automotive
+  else if (lowerName.includes('škoda') || lowerName.includes('skoda')) brand = 'Škoda';
+  else if (lowerName.includes('volkswagen') || lowerName.includes('vw ')) brand = 'Volkswagen';
+  else if (lowerName.includes('audi')) brand = 'Audi';
+  else if (lowerName.includes('seat')) brand = 'Seat';
+  else if (lowerName.includes('cupra')) brand = 'Cupra';
+  else if (lowerName.includes('porsche')) brand = 'Porsche';
+  else if (lowerName.includes('nissan')) brand = 'Nissan';
+
+  // Food & Beverage
+  else if (lowerName.includes('mcdonald')) brand = 'McDonald\'s';
+  else if (lowerName.includes('kaufland')) brand = 'Kaufland';
+  else if (lowerName.includes('rio mare')) brand = 'Rio Mare';
+  else if (lowerName.includes('oetker')) brand = 'Dr. Oetker';
+  else if (lowerName.includes('ahmad')) brand = 'Ahmad Tea';
+  else if (lowerName.includes('loacker')) brand = 'Loacker';
+  else if (lowerName.includes('zott')) brand = 'Zott';
+
+  // Henkel Group
+  else if (lowerName.includes('bref')) brand = 'Bref';
+  else if (lowerName.includes('schauma')) brand = 'Schauma';
+  else if (lowerName.includes('syoss')) brand = 'Syoss';
+  else if (lowerName.includes('gliss')) brand = 'Gliss';
+  else if (lowerName.includes('persil')) brand = 'Persil';
+  else if (lowerName.includes('perwoll')) brand = 'Perwoll';
+  else if (lowerName.includes('somat')) brand = 'Somat';
+  else if (lowerName.includes('weisser riese') || lowerName.includes('weisserriese')) brand = 'Weisser Riese';
+
+  // Schwarzkopf
+  else if (lowerName.includes('palette')) brand = 'Palette';
+  else if (lowerName.includes('taft')) brand = 'Taft';
+  else if (lowerName.includes('got2b')) brand = 'Got2b';
+
+  // Reckitt
+  else if (lowerName.includes('finish')) brand = 'Finish';
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // BEIERSDORF GROUP
+  // ═══════════════════════════════════════════════════════════════════════
+
+  // Nivea - različite kategorije
+  else if (lowerName.includes('nivea') || lowerName.includes('_nfc_') || lowerName.includes('_nbd_') ||
+           lowerName.includes('_nme_') || lowerName.includes('_ndo_') || lowerName.includes('_nfl_') ||
+           lowerName.includes('_nsu_') || lowerName.includes('_ncr_') || lowerName.includes('_niv_')) brand = 'Nivea';
+
+  // Eucerin - dermokozmetika
+  // Kodovi: ESU (Eucerin Sun), EFC (Eucerin Face Care), EBD (Eucerin Body), ECN (Eucerin)
+  else if (lowerName.includes('eucerin') || lowerName.includes('_esu_') ||
+           lowerName.includes('_efc_') || lowerName.includes('_ebd_') || lowerName.includes('_ecn_')) brand = 'Eucerin';
+
+  // Bolton Group
+  else if (lowerName.includes('borotalco')) brand = 'Borotalco';
+
+  // Barilla (tjestenine, umaci)
+  else if (lowerName.includes('barilla') || lowerName.includes('_bar_') || lowerName.includes('_baio_') ||
+           lowerName.includes('_mul_') || lowerName.includes('_gra_') || lowerName.includes('_pess_')) brand = 'Barilla';
+
+  // Logistics & Delivery
+  else if (lowerName.includes('boxnow')) brand = 'BoxNow';
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // PHARMA & HEALTH
+  // ═══════════════════════════════════════════════════════════════════════
+
+  else if (lowerName.includes('belupo') || lowerName.includes('rinil')) brand = 'Belupo';
+  else if (lowerName.includes('jgl') || lowerName.includes('muzej farmacije')) brand = 'JGL';
+  else if (lowerName.includes('reflustat')) brand = 'Reflustat';
+  else if (lowerName.includes('meralys')) brand = 'Meralys';
+  else if (lowerName.includes('prolife')) brand = 'Prolife';
+  else if (lowerName.includes('vizols')) brand = 'Vizols';
+  else if (lowerName.includes('lactogyn')) brand = 'Lactogyn';
+  else if (lowerName.includes('fungilac')) brand = 'Fungilac';
+  else if (lowerName.includes('hidra')) brand = 'Hidra';
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // PERSONAL CARE & HYGIENE
+  // ═══════════════════════════════════════════════════════════════════════
+
+  else if (lowerName.includes('bic')) brand = 'BIC';
+
+  // ═══════════════════════════════════════════════════════════════════════
+  // OSTALO
+  // ═══════════════════════════════════════════════════════════════════════
+
+  else if (lowerName.includes('bison')) brand = 'Bison';
+  else if (lowerName.includes('saponia')) brand = 'Saponia';
+  else if (lowerName.includes('uhu')) brand = 'UHU';
+  else if (lowerName.includes('energycom')) brand = 'Energycom';
 
   // TYPE (iz ad format ili naziva)
   let type = 'YouTube';
