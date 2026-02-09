@@ -15,7 +15,9 @@
       "Bash(npx tsc:*)",
       "Bash(node lib/master-merger-v2.js:*)",
       "Bash(node -e:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(ls:*)",
+      "Bash(pip install:*)"
     ]
   }
 }
