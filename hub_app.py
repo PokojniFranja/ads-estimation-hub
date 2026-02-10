@@ -24,6 +24,21 @@ st.set_page_config(
 )
 
 # ============================================================================
+# CSS CUSTOMIZATION - Tighten spacing
+# ============================================================================
+
+st.markdown("""
+<style>
+    div.block-container {
+        padding-top: 1rem;
+    }
+    .stSidebar {
+        padding-top: 1rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# ============================================================================
 # HELPER FUNCTIONS
 # ============================================================================
 
@@ -151,10 +166,62 @@ def load_demographics_data(file_path):
     except:
         return pd.DataFrame()
 
-def get_dominant_demographics(campaign_id, df_demographics):
+def parse_age_range(age_str):
     """
-    Get dominant demographics for a campaign based on actual spend data.
-    Returns format: "Age | Gender" or "Multi-Age | Gender"
+    Parse age range string to get min and max age.
+    Examples:
+    - '18-24' -> (18, 24)
+    - '25 - 34' -> (25, 34)  [handles spaces]
+    - '65+' -> (65, 100)
+    - 'Unknown' -> (0, 0)
+    """
+    age_str = str(age_str).strip()
+
+    if age_str in ['Unknown', '', 'N/A']:
+        return (0, 0)
+
+    # Remove all spaces for easier parsing
+    age_str_clean = age_str.replace(' ', '')
+
+    if '-' in age_str_clean:
+        # Format: "18-24" or "25-34" or "25 - 34"
+        parts = age_str_clean.split('-')
+        try:
+            age_min = int(parts[0])
+            age_max_str = parts[1].replace('+', '')
+            age_max = int(age_max_str) if age_max_str else 100
+        except:
+            return (0, 0)
+    elif '+' in age_str_clean:
+        # Format: "65+" or "65 +"
+        try:
+            age_min = int(age_str_clean.replace('+', ''))
+            age_max = 100
+        except:
+            return (0, 0)
+    else:
+        # Single number or unknown
+        try:
+            age_min = age_max = int(age_str_clean)
+        except:
+            return (0, 0)
+
+    return (age_min, age_max)
+
+def get_full_range_demographics(campaign_id, df_demographics, threshold=0.10):
+    """
+    Get FULL RANGE demographics with THRESHOLD FILTERING.
+
+    CRITICAL CHANGE: Only includes age/gender segments that account for at least
+    10% of total campaign spend. This eliminates noise from optimized targeting
+    and accidental impressions.
+
+    Examples:
+    - Campaign with 95% spend in 25-34 → Returns "25-34" (NOT "18-65+")
+    - Campaign with 40% in 18-24, 45% in 25-34 → Returns "18-34"
+    - Campaign with 5% in each age → Returns dominant segment only
+
+    This ensures accurate targeting representation and meaningful filter options.
     """
     if df_demographics is None or len(df_demographics) == 0:
         return ("Unknown", "Unknown")
@@ -165,53 +232,133 @@ def get_dominant_demographics(campaign_id, df_demographics):
     if len(demo_data) == 0:
         return ("Unknown", "Unknown")
 
-    # Group by Age and Gender, sum spend
-    demo_grouped = demo_data.groupby(['Age', 'Gender'])['Cost_parsed'].sum()
+    # Calculate total spend for this campaign
+    total_spend = demo_data['Cost_parsed'].sum()
 
-    if len(demo_grouped) == 0:
+    if total_spend == 0:
         return ("Unknown", "Unknown")
 
-    # Find dominant segment (highest spend)
-    dominant_segment = demo_grouped.idxmax()
-    dominant_age, dominant_gender = dominant_segment
-    dominant_spend = demo_grouped.max()
-    total_spend = demo_grouped.sum()
+    # Group by Age and calculate spend per segment
+    age_spend = demo_data.groupby('Age')['Cost_parsed'].sum()
 
-    # Check if this is multi-segment (no single segment has >50% of spend)
-    if dominant_spend / total_spend < 0.5:
-        # Multi-segment campaign
-        ages = sorted(demo_grouped.index.get_level_values(0).unique())
-        genders = demo_grouped.index.get_level_values(1).unique()
+    # Filter ages by threshold (10% minimum) AND exclude Unknown
+    significant_ages = []
+    for age, spend in age_spend.items():
+        age_str = str(age).strip()
 
-        # Determine age representation
-        if len(ages) > 3:
-            age_part = "Multi-Age"
-        elif len(ages) > 1:
-            age_part = f"{ages[0]}-{ages[-1]}"
+        # CRITICAL: Skip Unknown and invalid values
+        if age_str in ['Unknown', 'nan', '', 'N/A']:
+            continue
+
+        percentage = spend / total_spend
+
+        # Only include if meets 10% threshold
+        if percentage >= threshold:
+            significant_ages.append((age_str, spend, percentage))
+
+    # If no significant ages meet threshold, fall back to dominant segment
+    if len(significant_ages) == 0:
+        valid_ages = {age: spend for age, spend in age_spend.items()
+                      if str(age).strip() not in ['Unknown', 'nan', '', 'N/A']}
+
+        if len(valid_ages) > 0:
+            dominant_age = max(valid_ages, key=valid_ages.get)
+            dominant_spend = valid_ages[dominant_age]
+            significant_ages = [(str(dominant_age), dominant_spend, dominant_spend / total_spend)]
         else:
-            age_part = ages[0]
+            return ("Unknown", "Unknown")
 
-        # Determine gender representation
-        if len(genders) > 1:
-            gender_part = "All"
-        else:
-            gender_part = genders[0]
+    # Sort by percentage descending
+    significant_ages.sort(key=lambda x: x[2], reverse=True)
 
-        return (age_part, gender_part)
+    # CRITICAL: If only ONE significant age segment, return it AS IS (don't create range)
+    if len(significant_ages) == 1:
+        age_range = significant_ages[0][0]
     else:
-        # Single dominant segment
-        # Map gender codes
-        gender_map = {
-            'F': 'Female',
-            'M': 'Male',
-            'Female': 'Female',
-            'Male': 'Male',
-            'Unknown': 'Unknown'
-        }
+        # Multiple significant segments - create range from min to max
+        age_strings = [a[0] for a in significant_ages]
 
-        gender_label = gender_map.get(str(dominant_gender).strip(), dominant_gender)
+        # Parse all significant ages to find min/max
+        age_min = 999
+        age_max = 0
 
-        return (str(dominant_age), gender_label)
+        for age_str in age_strings:
+            min_age, max_age = parse_age_range(age_str)
+            if min_age > 0:
+                if min_age < age_min:
+                    age_min = min_age
+                # Don't let 65+ (100) inflate the max
+                if max_age < 100 and max_age > age_max:
+                    age_max = max_age
+                elif max_age >= 100:  # This is 65+
+                    age_max = 65
+
+        # Construct range
+        if age_min == 999 or age_max == 0:
+            age_range = significant_ages[0][0]  # Fallback to dominant
+        elif age_min == age_max:
+            age_range = str(age_min)
+        elif age_max >= 65:
+            age_range = f"{age_min}-65+"
+        else:
+            age_range = f"{age_min}-{age_max}"
+
+    # Gender logic with threshold
+    gender_spend = demo_data.groupby('Gender')['Cost_parsed'].sum()
+
+    significant_genders = []
+    for gender, spend in gender_spend.items():
+        gender_str = str(gender).strip()
+
+        # CRITICAL: Skip Unknown
+        if gender_str in ['Unknown', 'nan', '', 'N/A']:
+            continue
+
+        percentage = spend / total_spend
+
+        if percentage >= threshold:
+            significant_genders.append(gender_str)
+
+    # If no significant genders, fall back to dominant
+    if len(significant_genders) == 0:
+        valid_genders = {gender: spend for gender, spend in gender_spend.items()
+                        if str(gender).strip() not in ['Unknown', 'nan', '', 'N/A']}
+
+        if len(valid_genders) > 0:
+            dominant_gender = max(valid_genders, key=valid_genders.get)
+            significant_genders = [str(dominant_gender)]
+        else:
+            gender = 'Unknown'
+            return (age_range, gender)
+
+    # Map gender codes
+    gender_map = {
+        'F': 'Female',
+        'M': 'Male',
+        'Female': 'Female',
+        'Male': 'Male',
+    }
+
+    genders_normalized = [gender_map.get(g, g) for g in significant_genders]
+
+    if len(genders_normalized) > 1:
+        gender = 'All'
+    else:
+        gender = genders_normalized[0]
+
+    # CRITICAL: Check if campaign has ANY spend in Unknown category
+    # If yes, add '+ UNK' suffix to indicate "grey zone" users
+    unknown_spend = 0
+    for age, spend in age_spend.items():
+        age_str = str(age).strip()
+        if age_str in ['Unknown', 'nan', '', 'N/A', 'Undetermined']:
+            unknown_spend += spend
+
+    # Add + UNK suffix if there's at least 0.01 EUR in Unknown
+    if unknown_spend >= 0.01:
+        age_range = age_range + ' + UNK'
+
+    return (age_range, gender)
 
 def calculate_weighted_cpm(df):
     """Calculate weighted average CPM."""
@@ -222,6 +369,41 @@ def calculate_weighted_cpm(df):
         return (total_cost / total_impressions) * 1000
     else:
         return 0.0
+
+def get_targeting_level(df_filtered):
+    """
+    Determine targeting level based on 80% MAJORITY RULE.
+
+    LOCAL TARGETING bubble is shown ONLY if local campaigns (city keywords)
+    make up MORE THAN 80% of currently filtered data.
+
+    In all other cases (including initial view), shows NATIONAL TARGETING.
+
+    Returns: (icon_text, level_text, color)
+    """
+    city_keywords = ['McDelivery', 'Zagreb', 'Split', 'Rijeka', 'Osijek', 'Zadar', 'Pula']
+
+    total_campaigns = len(df_filtered)
+
+    # If no campaigns, default to NATIONAL
+    if total_campaigns == 0:
+        return ('🌍 NATIONAL TARGETING', 'Croatia', '#28a745')
+
+    # Count campaigns with city keywords
+    local_count = 0
+    for campaign_name in df_filtered['Campaign']:
+        campaign_str = str(campaign_name).lower()
+        if any(keyword.lower() in campaign_str for keyword in city_keywords):
+            local_count += 1
+
+    # Calculate percentage
+    local_percentage = (local_count / total_campaigns) * 100
+
+    # 80% MAJORITY RULE
+    if local_percentage > 80:
+        return ('📍 LOCAL TARGETING', 'City Level', '#ffc107')  # Yellow - only if >80% local
+    else:
+        return ('🌍 NATIONAL TARGETING', 'Croatia', '#28a745')  # Green - default
 
 def fix_croatia_brand(df):
     """Fix campaigns where Brand is incorrectly set to 'Croatia'."""
@@ -240,20 +422,25 @@ def fix_croatia_brand(df):
         for idx in df[mask_croatia].index:
             account = df.loc[idx, account_col]
 
+            # Get original campaign name for additional checks
+            campaign_name = str(df.loc[idx, 'Campaign']).lower() if pd.notna(df.loc[idx, 'Campaign']) else ''
+
             if pd.notna(account):
                 account_str = str(account).lower()
 
-                # Check for specific brands
-                if 'bison' in account_str:
+                # Check for specific brands in both account name and campaign name
+                if 'bison' in account_str or 'bison' in campaign_name:
                     df.loc[idx, 'Brand'] = 'Bison'
-                elif 'ceresit' in account_str:
+                elif 'ceresit' in account_str or 'ceresit' in campaign_name:
                     df.loc[idx, 'Brand'] = 'Ceresit'
+                elif 'hidra' in account_str or 'hidra' in campaign_name:
+                    df.loc[idx, 'Brand'] = 'Hidra'
                 else:
                     # Extract from account name (first word before underscore)
                     brand_extracted = str(account).split('_')[0].split()[0][:30]
                     df.loc[idx, 'Brand'] = brand_extracted if brand_extracted else 'Unknown'
 
-        st.sidebar.success("✅ Brand 'Croatia' errors fixed!")
+        st.sidebar.success("✅ Brand 'Croatia' errors fixed (Bison, Ceresit, Hidra)!")
 
     return df
 
@@ -298,12 +485,18 @@ try:
     # CRITICAL FIX 1: Fix 'Croatia' brand errors
     df_campaigns = fix_croatia_brand(df_campaigns)
 
-    # CRITICAL FIX 2: Calculate actual demographics for each campaign
-    st.sidebar.info("🔄 Calculating actual demographics from data...")
+    # CRITICAL CLEANUP: Remove campaigns with Unknown quarter
+    unknown_quarter_count = len(df_campaigns[df_campaigns['Quarter'] == 'Unknown'])
+    df_campaigns = df_campaigns[df_campaigns['Quarter'] != 'Unknown']
+    if unknown_quarter_count > 0:
+        st.sidebar.warning(f"🗑️ Removed {unknown_quarter_count} campaigns with Unknown quarter")
 
-    # Apply demographics correction
+    # CRITICAL FIX 2: Calculate FULL RANGE demographics with THRESHOLD filtering
+    st.sidebar.info("🔄 Calculating demographics with 10% threshold filtering...")
+
+    # Apply full range demographics (not just dominant segment)
     demographics_results = df_campaigns['Campaign ID'].apply(
-        lambda cid: get_dominant_demographics(cid, df_demographics)
+        lambda cid: get_full_range_demographics(cid, df_demographics)
     )
 
     df_campaigns['Age_Range'] = demographics_results.apply(lambda x: x[0])
@@ -314,6 +507,59 @@ try:
 
     # Rebuild Standardized_Campaign_Name with corrected demographics AND fixed brands
     df_campaigns['Standardized_Campaign_Name_Corrected'] = df_campaigns.apply(rebuild_campaign_name, axis=1)
+
+    # CRITICAL FIX 3: Aggregate by Campaign ID to ensure one campaign = one row
+    st.sidebar.info("🔄 Aggregating campaigns (one campaign = one row)...")
+
+    # Check if there are duplicate Campaign IDs
+    duplicate_count = df_campaigns['Campaign ID'].duplicated().sum()
+
+    if duplicate_count > 0:
+        st.sidebar.warning(f"⚠️ Found {duplicate_count} duplicate campaign entries - aggregating...")
+
+        # Define aggregation rules
+        agg_rules = {
+            'Campaign': 'first',
+            'Brand': 'first',
+            'Ad_Format': 'first',
+            'Date_Range': 'first',
+            'Bid_Strategy_Short': 'first',
+            'Goal': 'first',
+            'Cost': 'first',  # Original cost string
+            'Impr.': 'first',  # Original impressions string
+            'Peak_Reach': 'first',  # Original reach string
+            'Cost_parsed': 'sum',  # SUM total cost
+            'Impr_parsed': 'sum',  # SUM total impressions
+            'Reach_parsed': 'max',  # PEAK reach
+            'Clicks_parsed': 'sum',
+            'CTR_parsed': 'mean',
+            'Avg_CPC_parsed': 'mean',
+            'Avg_CPM_parsed': 'mean',
+            'TrueView_views_parsed': 'sum',
+            'TrueView_CPV_parsed': 'mean',
+            'Conversions_parsed': 'sum',
+            'Conv_rate_parsed': 'mean',
+            'Cost_per_conv_parsed': 'mean',
+            'CPM': 'mean',
+            'Quarter': 'first',
+            'Age_Range': 'first',  # Already calculated as full range
+            'Gender': 'first',  # Already calculated as full coverage
+            'Target_Corrected': 'first',
+            'Standardized_Campaign_Name_Corrected': 'first'
+        }
+
+        # Add Account column if it exists
+        if 'Account' in df_campaigns.columns:
+            agg_rules['Account'] = 'first'
+        elif 'Account name' in df_campaigns.columns:
+            agg_rules['Account name'] = 'first'
+
+        # Aggregate by Campaign ID
+        df_campaigns = df_campaigns.groupby('Campaign ID', as_index=False).agg(agg_rules)
+
+        st.sidebar.success(f"✅ Aggregated to {len(df_campaigns)} unique campaigns!")
+    else:
+        st.sidebar.success("✅ No duplicate campaigns found - data is clean!")
 
     data_loaded = True
     st.sidebar.success("✅ Data loaded & corrected!")
@@ -328,24 +574,122 @@ except Exception as e:
 
 if data_loaded:
 
+    # ========================================================================
+    # SESSION STATE INITIALIZATION (for reset functionality)
+    # ========================================================================
+
+    if 'reset_key' not in st.session_state:
+        st.session_state.reset_key = 0
+
     # HEADER
     st.title("🤖 Estimator Terminator V4 - HR")
     st.markdown("### neka nam je dragi Bog na pomoći")
+
+    # AGGREGATION LOGIC DISCLAIMER
+    st.info("""
+    **📊 Data Aggregation Logic:**
+    - **One Campaign = One Row** - Sve metrike su agregirane po Campaign ID
+    - **Threshold Filtering (10%)** - Age/Gender segment mora imati minimalno 10% ukupnog troška da bi bio uključen u raspon (eliminira noise od optimized targetinga)
+    - **Smart Range** - Kampanja s 95% troška u 25-34 prikazuje se kao '25-34', NE kao '18-65+'
+    - **'+ UNK' Oznaka** - Ako kampanja ima bilo kakav trošak u 'Unknown' kategoriji, prikazuje se sufiks ' + UNK' (npr. '18-34 + UNK') - označava "sivu zonu" korisnika
+    - **Benchmark Mode (± 10%)** - Ciljani budžet omogućuje precizno filtriranje kampanja slične vrijednosti (tolerance ± 10%)
+    - **Strict Filtering** - Filteri koriste Exact Match (odabir '18-24' prikazuje SAMO kampanje koje targetiraju isključivo 18-24)
+    - **Noise Analysis** - Desni grafikon prikazuje SVE segmente (uključujući <10% noise) za detaljnu analizu
+    """)
+
     st.markdown("---")
 
     # ========================================================================
     # LEFT SIDEBAR - FILTERS
     # ========================================================================
 
-    st.sidebar.header("🔍 Filteri")
-    st.sidebar.markdown("Odaberite parametre za filtriranje kampanja:")
+    st.sidebar.title('⚙️ Filteri')
+
+    # ========================================================================
+    # 1. RESET BUTTON (First element - no separators)
+    # ========================================================================
+
+    if st.sidebar.button("🔄 Resetiraj sve filtre", use_container_width=True, type="secondary"):
+        # Increment reset key to force all widgets to reset to defaults
+        st.session_state.reset_key += 1
+        st.rerun()
+
+    # ========================================================================
+    # 2. SEARCH MODULE (Priority filter - searches original campaign names)
+    # ========================================================================
+
+    search_query = st.sidebar.text_input(
+        "🔍 Pretraži kampanje",
+        value="",
+        placeholder="Upiši dio naziva kampanje...",
+        help="Pretraga po ORIGINALNOM nazivu kampanje (case-insensitive). Ima prioritet nad ostalim filterima.",
+        key=f"search_{st.session_state.reset_key}"
+    )
+
+    # ========================================================================
+    # 2b. TOGGLE ZA PRIKAZ ORIGINALNIH IMENA (odmah ispod Search-a)
+    # ========================================================================
+
+    show_original_names = st.sidebar.toggle(
+        "📄 Prikaži originalna imena kampanja",
+        value=False,
+        help="Kad je uključeno, tablica prikazuje originalna imena kampanja umjesto standardiziranih.",
+        key=f"show_original_{st.session_state.reset_key}"
+    )
+
+    # ========================================================================
+    # 3. DUALNI BUDGET FILTER (Third element - Benchmark Tool)
+    # ========================================================================
+
+    st.sidebar.markdown("### 💰 Budžet")
+
+    min_cost = float(df_campaigns['Cost_parsed'].min())
+    max_cost = float(df_campaigns['Cost_parsed'].max())
+
+    # Target Budget Input (for benchmarking)
+    target_budget = st.sidebar.number_input(
+        "Ciljani budžet (€):",
+        min_value=0.0,
+        max_value=max_cost * 2,
+        value=0.0,
+        step=100.0,
+        format="%.0f",
+        help="Prikazuje kampanje slične vrijednosti za lakši benchmark (± 10% od ciljanog iznosa)",
+        key=f"target_budget_{st.session_state.reset_key}"
+    )
+
+    # Budget Range Slider (disabled if target budget is set)
+    selected_budget_range = st.sidebar.slider(
+        "Raspon troška (EUR):",
+        min_value=min_cost,
+        max_value=max_cost,
+        value=(min_cost, max_cost),
+        format="€%.0f",
+        disabled=(target_budget > 0),
+        key=f"budget_slider_{st.session_state.reset_key}"
+    )
+
+    # Show active filter info (compact)
+    if target_budget > 0:
+        lower_bound = target_budget * 0.9
+        upper_bound = target_budget * 1.1
+        st.sidebar.caption(f"🎯 Benchmark: €{lower_bound:,.0f} - €{upper_bound:,.0f} (± 10%)")
+    else:
+        st.sidebar.caption(f"📊 Raspon: €{selected_budget_range[0]:,.0f} - €{selected_budget_range[1]:,.0f}")
+
+    st.sidebar.divider()
+
+    # ========================================================================
+    # 4. OSTALI FILTERI
+    # ========================================================================
 
     # Brand filter
     brands = ['Svi'] + sorted(df_campaigns['Brand'].dropna().unique().tolist())
     selected_brands = st.sidebar.multiselect(
         "Brand:",
         options=brands,
-        default=['Svi']
+        default=['Svi'],
+        key=f"brands_{st.session_state.reset_key}"
     )
 
     # Ad Format filter
@@ -353,7 +697,8 @@ if data_loaded:
     selected_formats = st.sidebar.multiselect(
         "Ad Format:",
         options=ad_formats,
-        default=['Svi']
+        default=['Svi'],
+        key=f"formats_{st.session_state.reset_key}"
     )
 
     # Age Range filter (using corrected demographics)
@@ -361,7 +706,9 @@ if data_loaded:
     selected_ages = st.sidebar.multiselect(
         "Age Group:",
         options=age_ranges,
-        default=['Svi']
+        default=['Svi'],
+        help="⚠️ STRICT MATCH: Odabir '18-24' prikazuje SAMO kampanje koje targetiraju isključivo 18-24. Kampanje s širim rasponom (npr. 18-34) NEĆE biti prikazane.",
+        key=f"ages_{st.session_state.reset_key}"
     )
 
     # Gender filter (using corrected demographics)
@@ -369,7 +716,9 @@ if data_loaded:
     selected_genders = st.sidebar.multiselect(
         "Gender:",
         options=genders,
-        default=['Svi']
+        default=['Svi'],
+        help="⚠️ STRICT MATCH: Odabir 'Female' prikazuje SAMO kampanje koje targetiraju isključivo žene. Kampanje s 'All' NEĆE biti prikazane.",
+        key=f"genders_{st.session_state.reset_key}"
     )
 
     # Bid Strategy filter
@@ -377,7 +726,8 @@ if data_loaded:
     selected_bid_strategies = st.sidebar.multiselect(
         "Bid Strategy:",
         options=bid_strategies,
-        default=['Svi']
+        default=['Svi'],
+        key=f"bid_strategies_{st.session_state.reset_key}"
     )
 
     # Quarter filter
@@ -385,7 +735,8 @@ if data_loaded:
     selected_quarters = st.sidebar.multiselect(
         "Quarter:",
         options=quarters,
-        default=['Svi']
+        default=['Svi'],
+        key=f"quarters_{st.session_state.reset_key}"
     )
 
     st.sidebar.markdown("---")
@@ -434,7 +785,8 @@ if data_loaded:
         "Dodatne Metrike:",
         options=optional_metrics,
         default=['Peak Reach'],
-        help="Odaberi dodatne metrike koje želiš vidjeti u tablici"
+        help="Odaberi dodatne metrike koje želiš vidjeti u tablici",
+        key=f"metrics_{st.session_state.reset_key}"
     )
 
     # Combine base and selected optional metrics
@@ -463,9 +815,42 @@ if data_loaded:
 
     df_filtered = df_campaigns.copy()
 
+    # ========================================================================
+    # PRIORITY: SEARCH FILTER (Applied FIRST - has priority over other filters)
+    # ========================================================================
+
+    if search_query and search_query.strip():
+        # Case-insensitive search on ORIGINAL campaign names
+        search_lower = search_query.strip().lower()
+        df_filtered = df_filtered[
+            df_filtered['Campaign'].str.lower().str.contains(search_lower, na=False)
+        ]
+
+        # Debug check - if no results found
+        if len(df_filtered) == 0:
+            st.warning(
+                "⚠️ Pronađeno 0 kampanja s tim imenom - provjeri filter kvartala ili status čišćenja Unknown kampanja"
+            )
+
     # Apply Brand filter
     if 'Svi' not in selected_brands and len(selected_brands) > 0:
         df_filtered = df_filtered[df_filtered['Brand'].isin(selected_brands)]
+
+    # Apply Budget filter (DUALNI - Target Budget ili Slider)
+    if target_budget > 0:
+        # BENCHMARK MODE: Use target budget with ± 10% range (tighter tolerance)
+        lower_bound = target_budget * 0.9
+        upper_bound = target_budget * 1.1
+        df_filtered = df_filtered[
+            (df_filtered['Cost_parsed'] >= lower_bound) &
+            (df_filtered['Cost_parsed'] <= upper_bound)
+        ]
+    else:
+        # STANDARD MODE: Use slider range
+        df_filtered = df_filtered[
+            (df_filtered['Cost_parsed'] >= selected_budget_range[0]) &
+            (df_filtered['Cost_parsed'] <= selected_budget_range[1])
+        ]
 
     # Apply Ad Format filter
     if 'Svi' not in selected_formats and len(selected_formats) > 0:
@@ -496,6 +881,11 @@ if data_loaded:
 
     with col1:
         st.markdown(f"### 📋 Filtrirane Kampanje")
+
+        # Show search indicator if active
+        if search_query and search_query.strip():
+            st.markdown(f"🔍 **Search aktivan:** '{search_query}'")
+
         st.markdown(f"**{len(df_filtered):,}** kampanja od ukupno **{len(df_campaigns):,}**")
 
     with col2:
@@ -511,14 +901,6 @@ if data_loaded:
 
     # Display filtered campaigns table
     if len(df_filtered) > 0:
-
-        # Show selected metrics as visual tags
-        st.markdown("### 📊 Odabrane Metrike u Tablici:")
-        metric_tags = " · ".join([f"**{m}**" for m in all_selected_metrics])
-        st.markdown(f"{metric_tags}")
-        st.caption(f"💡 Prikazujem {len(all_selected_metrics)} metrika. Promijeni odabir u sidebaru → 📊 Odaberi Metrike za Prikaz")
-
-        st.markdown("---")
 
         # ====================================================================
         # DRILL-DOWN CONTEXT SELECTOR
@@ -541,7 +923,8 @@ if data_loaded:
 
         # Show campaign details if selected
         if selected_campaign_name != '-- Odaberi kampanju za detalje --':
-            # Find the campaign in dataframe
+            # Find the campaign in dataframe (GUARANTEED ONE ROW - already aggregated by Campaign ID)
+            # Uses ORIGINAL data from export (CPM, CTR) - NO new calculations
             campaign_row = df_filtered[df_filtered['Standardized_Campaign_Name_Corrected'] == selected_campaign_name].iloc[0]
 
             # Get account column name
@@ -628,9 +1011,20 @@ if data_loaded:
 
         st.markdown("### 📊 Campaign Table")
 
+        # Visual feedback for toggle state
+        if show_original_names:
+            st.info("📄 **Prikazujem originalna imena kampanja** (kao što su unesena u Google Ads)")
+        else:
+            st.caption("💡 Prikazujem standardizirana imena. Uključi toggle '📄 Prikaži originalna imena kampanja' u sidebar-u za originalne nazive.")
+
         # Prepare display dataframe with dynamic columns
-        display_columns = ['Standardized_Campaign_Name_Corrected']
-        display_column_names = ['Campaign Name']
+        # CONDITIONAL: Use original or standardized name based on toggle
+        if show_original_names:
+            display_columns = ['Campaign']
+            display_column_names = ['Original Campaign Name']
+        else:
+            display_columns = ['Standardized_Campaign_Name_Corrected']
+            display_column_names = ['Campaign Name']
 
         # Add selected metrics
         for metric_name in all_selected_metrics:
@@ -672,14 +1066,12 @@ if data_loaded:
         # RIGHT SIDEBAR - INSIGHTS
         # ====================================================================
 
-        st.markdown("---")
-        st.markdown("## 📊 Insights & Analytics")
-
         col_left, col_right = st.columns([2, 1])
 
         with col_left:
             # Age Group Distribution (using corrected demographics)
-            st.markdown("### 👥 Distribucija po Dobnim Skupinama (Stvarni Podaci)")
+            st.markdown("### 👥 Distribucija po Dobnim Skupinama")
+            st.caption("💡 Prikazuje trošak po značajnim rasponima (≥10% threshold). Kampanja s 95% troška u 25-34 prikazuje se kao '25-34', ne '18-65+'.")
 
             age_distribution = df_filtered.groupby('Age_Range')['Cost_parsed'].sum().sort_values(ascending=False)
 
@@ -719,20 +1111,24 @@ if data_loaded:
                 st.info("Nema podataka o dobnim skupinama za odabrane filtre.")
 
         with col_right:
-            # Location Badge
+            # Location Badge (DYNAMIC - changes based on campaign names)
             st.markdown("### 📍 Lokacija")
-            st.markdown("""
+
+            # Get targeting level dynamically
+            targeting_icon, targeting_level, border_color = get_targeting_level(df_filtered)
+
+            st.markdown(f"""
             <div style="
-                background-color: #d4edda;
-                border: 2px solid #28a745;
+                background-color: #f8f9fa;
+                border: 3px solid {border_color};
                 border-radius: 10px;
                 padding: 20px;
                 text-align: center;
                 margin-top: 20px;
             ">
-                <h2 style="color: #155724; margin: 0;">🇭🇷</h2>
-                <h3 style="color: #155724; margin: 10px 0;">CROATIA</h3>
-                <p style="color: #155724; margin: 0;">100% Croatian Market</p>
+                <h2 style="color: #212529; margin: 0; font-size: 24px;">{targeting_icon}</h2>
+                <h3 style="color: #212529; margin: 10px 0; font-size: 16px;">{targeting_level}</h3>
+                <p style="color: #6c757d; margin: 0; font-size: 12px;">Croatia 🇭🇷</p>
             </div>
             """, unsafe_allow_html=True)
 
@@ -746,7 +1142,74 @@ if data_loaded:
                     pct = (cost / gender_distribution.sum() * 100)
                     st.markdown(f"**{gender}:** €{cost:,.2f} ({pct:.1f}%)")
 
+            # ================================================================
+            # NOISE ANALYSIS CHART (Shows ALL age segments, no threshold)
+            # ================================================================
+
+            st.markdown("---")
+            st.markdown("### 📊 Detaljna Raspodjela po Godinama")
+            st.caption("💡 Prikazuje SVE age segmente uključujući 'noise' ispod 10% thresholda")
+
+            # Get Campaign IDs from filtered data
+            campaign_ids_filtered = df_filtered['Campaign ID'].tolist()
+
+            # Get demographics for these campaigns
+            demo_filtered = df_demographics[df_demographics['Campaign ID'].isin(campaign_ids_filtered)]
+
+            if len(demo_filtered) > 0:
+                # Group by Age and sum spend (NO THRESHOLD - show everything)
+                age_breakdown = demo_filtered.groupby('Age')['Cost_parsed'].sum().sort_values(ascending=False)
+
+                # Remove completely empty segments
+                age_breakdown = age_breakdown[age_breakdown > 0]
+
+                if len(age_breakdown) > 0:
+                    # Create dataframe for chart
+                    df_age_noise = pd.DataFrame({
+                        'Age': age_breakdown.index,
+                        'Cost': age_breakdown.values
+                    })
+
+                    # Calculate percentages
+                    total_cost_noise = df_age_noise['Cost'].sum()
+                    df_age_noise['Percentage'] = (df_age_noise['Cost'] / total_cost_noise * 100).round(2)
+
+                    # Create bar chart
+                    fig_age_noise = px.bar(
+                        df_age_noise,
+                        x='Age',
+                        y='Cost',
+                        title='',
+                        labels={'Cost': 'Trošak (EUR)', 'Age': 'Dobna Skupina'},
+                        text='Percentage',
+                        color='Percentage',
+                        color_continuous_scale='Reds',
+                        hover_data={'Cost': ':,.2f', 'Percentage': ':.2f'}
+                    )
+
+                    fig_age_noise.update_traces(
+                        texttemplate='%{text:.1f}%',
+                        textposition='outside',
+                        textfont_size=10
+                    )
+                    fig_age_noise.update_layout(showlegend=False, height=350)
+
+                    st.plotly_chart(fig_age_noise, use_container_width=True)
+
+                    # Show mini table with < 10% segments highlighted
+                    st.caption("📌 **Crveno označeni segmenti** su ispod 10% thresholda (eliminirani iz glavnog raspona)")
+
+                    # Show segments below threshold
+                    below_threshold = df_age_noise[df_age_noise['Percentage'] < 10.0]
+                    if len(below_threshold) > 0:
+                        st.caption(f"**Noise segmenti (<10%):** {', '.join([f'{age} ({pct:.1f}%)' for age, pct in zip(below_threshold['Age'], below_threshold['Percentage'])])}")
+                else:
+                    st.info("Nema dostupnih podataka o dobnim segmentima.")
+            else:
+                st.info("Nema demographics podataka za odabrane kampanje.")
+
             # Additional stats
+            st.markdown("---")
             st.markdown("### 📈 Statistika")
 
             total_brands = df_filtered['Brand'].nunique()
@@ -830,8 +1293,11 @@ if data_loaded:
             <p style="margin: 0; color: #856404; font-size: 14px;">
                 <strong>ℹ️ Napomena o podacima:</strong> Prikazani podaci temelje se na <strong>HR-only trošku</strong>
                 (očišćeno od worldwide grešaka i regionalnog spenda). Svi iznosi odražavaju isključivo hrvatski market.
-                <strong>Demographics su kalkulirani iz stvarnih age-gender podataka</strong> (dominantni segment po spend-u).
-                <strong>Brand 'Croatia' greške su automatski ispravljene</strong> (Bison, Ceresit).
+                <strong>Demographics s 10% threshold</strong> - prikazuje se samo age/gender segment ako nosi minimalno 10% ukupnog troška (eliminira optimized targeting noise).
+                Kampanja s 95% troška u 25-34 prikazuje se kao '25-34', NE kao '18-65+'.
+                <strong>'+ UNK' oznaka</strong> označava kampanje s troškom u 'Unknown' kategoriji (siva zona korisnika).
+                <strong>Brand 'Croatia' greške su automatski ispravljene</strong> (Bison, Ceresit, Hidra).
+                <strong>Filteri koriste strict match</strong> - odabir specifičnog raspona prikazuje samo kampanje koje targetiraju isključivo taj raspon.
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -957,8 +1423,9 @@ if data_loaded:
         <p><strong>Ads Estimation Hub - HR Prototype V4</strong> | Developed for Croatian Market 🇭🇷</p>
         <p>Data Source: ads_estimation_hub_HR_PROTOTYPE_V4_STANDARDIZED.csv + Demographics Data</p>
         <p>Total Campaigns in Database: {total} | Coverage: Q1-Q4 2025</p>
-        <p><em>Demographics calculated from actual age-gender spend data | Brand 'Croatia' errors auto-fixed</em></p>
-        <p><em>✨ NEW: Drill-down Context View - Select any campaign to see original name and details</em></p>
+        <p><em>✨ One Campaign = One Row | 10% Threshold Filtering | Smart Range Detection</em></p>
+        <p><em>Demographics show SIGNIFICANT segments only (≥10% spend) | Brand 'Croatia' errors auto-fixed (Bison, Ceresit, Hidra)</em></p>
+        <p><em>💡 Drill-down Context View - Select any campaign to see original name and details</em></p>
     </div>
     """.format(total=len(df_campaigns)), unsafe_allow_html=True)
 
