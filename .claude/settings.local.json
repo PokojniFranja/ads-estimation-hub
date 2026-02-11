@@ -17,7 +17,9 @@
       "Bash(node -e:*)",
       "Bash(node:*)",
       "Bash(ls:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(for file in \"data - v3/campaign - metrics - v3\"/*.csv)",
+      "Bash(do echo \"=== $file ===\")"
     ]
   }
 }

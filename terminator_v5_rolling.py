@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ADS ESTIMATION HUB - HR MASTER VERSION
+ADS ESTIMATION HUB - HR MASTER VERSION V5 - ROLLING REACH
 Interactive dashboard for Croatian Google Ads campaign analysis
-PRODUCTION VERSION with Clean Master Data & Sortable Columns
+PRODUCTION VERSION with Rolling Reach Integration (90-day windows)
 """
 
 import streamlit as st
@@ -269,13 +269,15 @@ def parse_float(value):
 
 @st.cache_data
 def load_campaign_data(file_path):
-    """Load and parse the campaign data."""
+    """Load and parse the campaign data.
+    NOTE: Reach_parsed will be overridden with rolling reach data after loading.
+    """
     df = pd.read_csv(file_path, delimiter=';', encoding='utf-8-sig')
 
     # Parse numeric columns
     df['Cost_parsed'] = df['Cost'].apply(parse_cost)
     df['Impr_parsed'] = df['Impr.'].apply(parse_number)
-    df['Reach_parsed'] = df['Peak_Reach'].apply(parse_number)
+    df['Reach_parsed'] = df['Peak_Reach'].apply(parse_number)  # Temporary, will be replaced
 
     # Parse additional metrics if they exist
     if 'Clicks' in df.columns:
@@ -632,11 +634,40 @@ def rebuild_campaign_name(row):
 # ============================================================================
 
 CAMPAIGN_PATH = "MASTER_ADS_HR_CLEANED.csv"
+ROLLING_REACH_PATH = "MASTER_ROLLING_DATA_2025_CLEAN.csv"
 DEMOGRAPHICS_PATH = "data - v3/age - gender - v3/campaign age - gender - version 3.csv"
 
 try:
     df_campaigns = load_campaign_data(CAMPAIGN_PATH)
     df_demographics = load_demographics_data(DEMOGRAPHICS_PATH)
+
+    # Load rolling reach data
+    df_rolling = pd.read_csv(ROLLING_REACH_PATH, encoding='utf-8-sig')
+    df_rolling['Reach'] = pd.to_numeric(df_rolling['Reach'], errors='coerce')
+    df_rolling['Avg_Frequency'] = pd.to_numeric(df_rolling['Avg_Frequency'], errors='coerce')
+
+    # Get peak reach and avg frequency per campaign from rolling data
+    rolling_agg = df_rolling.groupby('Campaign_ID').agg({
+        'Reach': 'max',  # Peak reach across all windows
+        'Avg_Frequency': 'mean'  # Average frequency across windows
+    }).reset_index()
+    rolling_agg.columns = ['Campaign ID', 'Peak_Reach_Rolling', 'Avg_Frequency_Rolling']
+
+    # Merge rolling reach data into campaigns dataframe
+    df_campaigns = df_campaigns.merge(rolling_agg, on='Campaign ID', how='left')
+
+    # Use rolling reach if available, otherwise fallback to original
+    df_campaigns['Peak_Reach_Final'] = df_campaigns['Peak_Reach_Rolling'].fillna(df_campaigns['Peak_Reach'])
+    df_campaigns['Reach_parsed'] = df_campaigns['Peak_Reach_Final'].apply(parse_number)
+
+    # Add frequency from rolling data
+    df_campaigns['Avg_Frequency'] = df_campaigns['Avg_Frequency_Rolling']
+
+    # Count how many campaigns got rolling reach data
+    rolling_count = df_campaigns['Peak_Reach_Rolling'].notna().sum()
+    total_count = len(df_campaigns)
+
+    # This will be shown in sidebar later (after sidebar title)
 
     # SAFETY CLEANUP: Remove campaigns with Unknown quarter
     unknown_quarter_count = len(df_campaigns[df_campaigns['Quarter'] == 'Unknown'])
@@ -675,6 +706,7 @@ try:
             'Cost_parsed': 'sum',
             'Impr_parsed': 'sum',
             'Reach_parsed': 'max',
+            'Avg_Frequency': 'mean',
             'Clicks_parsed': 'sum',
             'CTR_parsed': 'mean',
             'Avg_CPC_parsed': 'mean',
@@ -725,6 +757,11 @@ if data_loaded:
     # ========================================================================
 
     st.sidebar.title('⚙️ Filteri')
+
+    # Show rolling reach coverage info
+    rolling_count = df_campaigns['Peak_Reach_Rolling'].notna().sum()
+    total_count = len(df_campaigns)
+    st.sidebar.caption(f"📊 Rolling Reach: {rolling_count}/{total_count} ({rolling_count/total_count*100:.0f}%) | 90-Day Windows")
 
     # ========================================================================
     # 1. RESET BUTTON (First element - no separators)
@@ -942,9 +979,9 @@ if data_loaded:
 
     if search_query and search_query.strip():
         # Case-insensitive search on ORIGINAL campaign names
-        search_lower = search_query.strip().lower()
+        search_term = search_query.strip()
         df_filtered = df_filtered[
-            df_filtered['Campaign'].str.lower().str.contains(search_lower, na=False)
+            df_filtered['Campaign'].str.contains(search_term, case=False, na=False)
         ]
 
     # Apply Brand filter
@@ -1026,8 +1063,25 @@ if data_loaded:
         # Create selectbox for campaign selection
         df_filtered_sorted = df_filtered.sort_values('Cost_parsed', ascending=False)
 
-        # Create campaign options list (using index for mapping)
-        campaign_options = ['-- Odaberi kampanju za detalje --'] + df_filtered_sorted['Standardized_Campaign_Name_Corrected'].tolist()
+        # Create campaign options list with original names in parentheses
+        if show_original_names:
+            # Show only original names
+            campaign_options = ['-- Odaberi kampanju za detalje --'] + df_filtered_sorted['Campaign'].tolist()
+            search_column = 'Campaign'
+        else:
+            # Show "Standardized (Original)"
+            campaign_display_list = (
+                df_filtered_sorted['Standardized_Campaign_Name_Corrected'] +
+                " (" + df_filtered_sorted['Campaign'] + ")"
+            ).tolist()
+            campaign_options = ['-- Odaberi kampanju za detalje --'] + campaign_display_list
+            search_column = 'Campaign_Display_Dropdown'
+
+            # Create mapping column for search
+            df_filtered_sorted['Campaign_Display_Dropdown'] = (
+                df_filtered_sorted['Standardized_Campaign_Name_Corrected'] +
+                " (" + df_filtered_sorted['Campaign'] + ")"
+            )
 
         selected_campaign_name = st.selectbox(
             "Odaberi kampanju za prikaz originalnog naziva i dodatnih detalja:",
@@ -1038,7 +1092,7 @@ if data_loaded:
 
         # Show campaign details if selected
         if selected_campaign_name != '-- Odaberi kampanju za detalje --':
-            campaign_row = df_filtered[df_filtered['Standardized_Campaign_Name_Corrected'] == selected_campaign_name].iloc[0]
+            campaign_row = df_filtered_sorted[df_filtered_sorted[search_column] == selected_campaign_name].iloc[0]
 
             # Get account column name
             account_col = 'Account' if 'Account' in df_filtered.columns else 'Account name' if 'Account name' in df_filtered.columns else None
@@ -1128,7 +1182,7 @@ if data_loaded:
         if show_original_names:
             st.caption("📄 Prikazujem originalna imena kampanja (kao što su unesena u Google Ads)")
         else:
-            st.caption("💡 Prikazujem standardizirana imena. Uključi toggle '📄 Prikaži originalna imena kampanja' u sidebar-u za originalne nazive.")
+            st.caption("💡 Prikazujem standardizirana imena s originalnim u zagradi. Uključi toggle '📄 Prikaži originalna imena kampanja' za samo originalne nazive.")
 
         # Prepare display dataframe with dynamic columns
         # CONDITIONAL: Use original or standardized name based on toggle
@@ -1136,7 +1190,12 @@ if data_loaded:
             display_columns = ['Campaign']
             display_column_names = ['Original Campaign Name']
         else:
-            display_columns = ['Standardized_Campaign_Name_Corrected']
+            # Create combined column: "Standardized Name (Original Name)"
+            df_filtered['Campaign_Display'] = (
+                df_filtered['Standardized_Campaign_Name_Corrected'] +
+                " (" + df_filtered['Campaign'] + ")"
+            )
+            display_columns = ['Campaign_Display']
             display_column_names = ['Campaign Name']
 
         # Add selected metrics
@@ -1374,7 +1433,8 @@ if data_loaded:
             ">
                 <h4 style="margin: 0; font-size: 16px; opacity: 0.9;">UKUPNE IMPRESIJE</h4>
                 <h1 style="margin: 10px 0; font-size: 36px; font-weight: bold;">{total_impressions:,}</h1>
-                <p style="margin: 0; font-size: 14px; opacity: 0.8;">Peak Reach: {df_filtered['Reach_parsed'].max():,}</p>
+                <p style="margin: 0; font-size: 14px; opacity: 0.8;">Peak Reach (90-day): {df_filtered['Reach_parsed'].max():,}</p>
+                <p style="margin: 0; font-size: 12px; opacity: 0.7;">Avg Freq: {df_filtered['Avg_Frequency'].mean():.2f}</p>
             </div>
             """, unsafe_allow_html=True)
 
@@ -1403,10 +1463,10 @@ if data_loaded:
 
     st.markdown("""
     <div style="text-align: center; color: #888; padding: 20px;">
-        <p><strong>Ads Estimation Hub - HR Master Version</strong> | Production-Ready for Croatian Market 🇭🇷</p>
-        <p>Data Source: MASTER_ADS_HR_CLEANED.csv (Pre-cleaned, Ad Format Fixed, Brand Corrected) + Demographics Data</p>
+        <p><strong>Ads Estimation Hub - HR Master V5 - Rolling Reach</strong> | Production-Ready for Croatian Market 🇭🇷</p>
+        <p>Data Sources: MASTER_ADS_HR_CLEANED.csv (Cost, Impressions, Brand) + MASTER_ROLLING_DATA_2025_CLEAN.csv (90-Day Reach & Frequency)</p>
         <p>Total Campaigns in Database: {total} | Coverage: Q1-Q4 2025</p>
-        <p><em>✨ Clean Master Data | Sortable Columns | 10% Threshold Filtering | Smart Range Detection</em></p>
+        <p><em>✨ Rolling Reach Data | S-Curve Saturations | 90-Day Windows | Precise Reach Estimation</em></p>
     </div>
     """.format(total=len(df_campaigns)), unsafe_allow_html=True)
 
